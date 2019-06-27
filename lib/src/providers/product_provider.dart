@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:mime_type/mime_type.dart';
 
-class ProductService {
+class ProductProvider {
   final String _urlBase = 'https://flutter-1c50d.firebaseio.com';
 
   Future<bool> createProduct(ProductModel product) async {

@@ -1,8 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_login/src/bloc/product_bloc.dart';
+import 'package:flutter_login/src/bloc/provider_bloc.dart';
 import 'package:flutter_login/src/models/product_model.dart';
-import 'package:flutter_login/src/services/product_service.dart';
 import 'package:flutter_login/src/utils/utils.dart' as utils;
 import 'package:image_picker/image_picker.dart';
 
@@ -19,9 +20,11 @@ class _ProductPageState extends State<ProductPage> {
   File filePhoto;
 
   ProductModel product = new ProductModel();
-  final productService = new ProductService();
+  // final productProvider = new ProductProvider();
+  ProductBloc productBloc;
   @override
   Widget build(BuildContext context) {
+    productBloc = ProviderBloc.productBloc(context);
     //recuperto el producto del navigator
     final ProductModel prodArgs = ModalRoute.of(context).settings.arguments;
     if (prodArgs != null) {
@@ -132,14 +135,14 @@ class _ProductPageState extends State<ProductPage> {
 
       //subir la imagen
       if (filePhoto != null) {
-        product.photoUrl = await productService.uploadImg(filePhoto);
+        product.photoUrl = await productBloc.uploadImg(filePhoto);
       }
 
       if (product.id == null) {
-        productService.createProduct(product);
+        productBloc.createProduct(product);
         showSnackbar('Registro guardado');
       } else {
-        productService.updateProduct(product);
+        productBloc.updateProduct(product);
         showSnackbar('Registro editado');
       }
 
